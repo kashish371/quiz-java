@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz App - DSA</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f6fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .quiz-container {
+      background: #fff;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      width: 750px;
+      max-width: 95%;
+      max-height: 95vh;
+      overflow-y: auto;
+    }
+    h2 {
+      margin-bottom: 20px;
+      white-space: pre-line;
+    }
+    pre {
+      background: #f0f0f0;
+      padding: 10px;
+      border-radius: 6px;
+      overflow-x: auto;
+    }
+    .options {
+      list-style: none;
+      padding: 0;
+    }
+    .options li {
+      margin: 10px 0;
+    }
+    .options button {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #f9f9f9;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-align: left;
+    }
+    .options button:hover {
+      background: #eaeaea;
+    }
+    #next-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: none;
+      background: #3498db;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      display: none;
+    }
+    #next-btn:hover {
+      background: #2980b9;
+    }
+    .correct {
+      background: #2ecc71 !important;
+      color: white;
+    }
+    .wrong {
+      background: #e74c3c !important;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h2 id="question">Question text</h2>
+    <ul class="options" id="options"></ul>
+    <button id="next-btn">Next</button>
+  </div>
+
+  <script>
+    const questions = [
+  {
+    q: "Which keyword is used to define a class in Java?",
+    options: ["a) def", "b) class", "c) struct", "d) define"],
+    answer: 1
+  },
+  {
+    q: "Java is a ___ language.",
+    options: ["a) Low-level", "b) Procedural", "c) Object-oriented", "d) Machine"],
+    answer: 2
+  },
+  {
+    q: "Which of these is NOT a Java feature?",
+    options: ["a) Platform independent", "b) Object-oriented", "c) Slow", "d) Secure"],
+    answer: 2
+  },
+  {
+    q: "Which method is the entry point of a Java program?",
+    options: ["a) start()", "b) main()", "c) init()", "d) run()"],
+    answer: 1
+  },
+  {
+    q: "Which of the following is a valid identifier?",
+    options: ["a) 123name", "b) _name", "c) name-1", "d) class"],
+    answer: 1
+  },
+  {
+    q: "Which keyword is used to create an object?",
+    options: ["a) class", "b) new", "c) create", "d) make"],
+    answer: 1
+  },
+  {
+    q: "Which datatype is used for whole numbers?",
+    options: ["a) float", "b) long", "c) boolean", "d) char"],
+    answer: 1
+  },
+  {
+    q: "Which of these stores true/false values?",
+    options: ["a) int", "b) boolean", "c) float", "d) String"],
+    answer: 1
+  },
+  {
+    q: "Which symbol is used for single-line comments?",
+    options: ["a) #", "b) //", "c) <!-- -->", "d) **"],
+    answer: 1
+  },
+  {
+    q: "Which keyword is used to inherit a class?",
+    options: ["a) inherits", "b) extends", "c) implement", "d) override"],
+    answer: 1
+  },
+  {
+    q: "Which operator is used for equality check?",
+    options: ["a) =", "b) ==", "c) !=", "d) ==="],
+    answer: 1
+  },
+  {
+    q: "Which of these is not an access modifier?",
+    options: ["a) public", "b) private", "c) protected", "d) friendly"],
+    answer: 3
+  },
+  {
+    q: "Which package is imported by default?",
+    options: ["a) java.util", "b) java.lang", "c) java.io", "d) java.net"],
+    answer: 1
+  },
+  {
+    q: "String in Java is a ___",
+    options: ["a) primitive type", "b) class", "c) operator", "d) pointer"],
+    answer: 1
+  },
+  {
+    q: "Which keyword stops a loop?",
+    options: ["a) break", "b) stop", "c) exit", "d) quit"],
+    answer: 0
+  },
+  {
+    q: "Array indexes in Java start from:",
+    options: ["a) -1", "b) 1", "c) 0", "d) any number"],
+    answer: 2
+  },
+  {
+    q: "Which loop executes at least once?",
+    options: ["a) for", "b) while", "c) do-while", "d) foreach"],
+    answer: 2
+  },
+  {
+    q: "Which keyword is used to prevent inheritance?",
+    options: ["a) abstract", "b) final", "c) static", "d) const"],
+    answer: 1
+  },
+  {
+    q: "Which exception occurs when dividing by zero?",
+    options: ["a) NullPointerException", "b) ArithmeticException", "c) IOException", "d) RuntimeException"],
+    answer: 1
+  },
+  {
+    q: "Which operator is used for logical AND?",
+    options: ["a) &", "b) &&", "c) ||", "d) !"],
+    answer: 1
+  },
+  {
+    q: "Which of these is used to read input from user?",
+    options: ["a) FileReader", "b) Scanner", "c) Printer", "d) Formatter"],
+    answer: 1
+  },
+  {
+    q: "Which keyword is used to create a subclass from an interface?",
+    options: ["a) extends", "b) implements", "c) interface", "d) inherits"],
+    answer: 1
+  },
+  {
+    q: "Which statement is used to handle exceptions?",
+    options: ["a) try-catch", "b) throw", "c) break", "d) return"],
+    answer: 0
+  },
+  {
+    q: "Which memory stores local variables?",
+    options: ["a) Heap", "b) Stack", "c) HDD", "d) Register"],
+    answer: 1
+  },
+  {
+    q: "Which can store decimal values?",
+    options: ["a) int", "b) float", "c) char", "d) boolean"],
+    answer: 1
+  },
+  {
+    q: "Which function converts string to integer?",
+    options: ["a) toInt()", "b) parseInt()", "c) valueOf()", "d) convert()"],
+    answer: 1
+  },
+  {
+    q: "Which of the following is NOT a loop?",
+    options: ["a) for", "b) while", "c) switch", "d) do-while"],
+    answer: 2
+  },
+  {
+    q: "What does JVM stand for?",
+    options: ["a) Java Virtual Machine", "b) Java Variable Method", "c) Joint Virtual Machine", "d) Java Verified Mode"],
+    answer: 0
+  },
+  {
+    q: "Which is used to return a value from a method?",
+    options: ["a) return", "b) break", "c) exit", "d) stop"],
+    answer: 0
+  },
+  {
+    q: "Java is ___ compiled and ___ interpreted.",
+    options: ["a) Not, fully", "b) Partially, partially", "c) Both, both", "d) Fully, not"],
+    answer: 1
+  },
+  {
+    q: "Default value of int is:",
+    options: ["a) 1", "b) 0", "c) null", "d) undefined"],
+    answer: 1
+  },
+  {
+    q: "Which is NOT a primitive datatype?",
+    options: ["a) int", "b) float", "c) boolean", "d) String"],
+    answer: 3
+  },
+  {
+    q: "Which operator increases value by 1?",
+    options: ["a) +", "b) ++", "c) --", "d) **"],
+    answer: 1
+  },
+  {
+    q: "What is the size of boolean?",
+    options: ["a) 1 bit", "b) JVM-dependent", "c) 8 bits", "d) 32 bits"],
+    answer: 1
+  },
+  {
+    q: "Which keyword is used for constants?",
+    options: ["a) const", "b) static", "c) final", "d) constant"],
+    answer: 2
+  },
+  {
+    q: "Which method converts int to String?",
+    options: ["a) toString()", "b) parseInt()", "c) valueOf()", "d) convert()"],
+    answer: 2
+  },
+  {
+    q: "Which OOP concept allows multiple methods with same name but different parameters?",
+    options: ["a) Inheritance", "b) Overloading", "c) Overriding", "d) Encapsulation"],
+    answer: 1
+  },
+  {
+    q: "Which OOP concept hides internal details?",
+    options: ["a) Polymorphism", "b) Encapsulation", "c) Abstraction", "d) Inheritance"],
+    answer: 2
+  },
+  {
+    q: "Which file type does Java compile into?",
+    options: ["a) .exe", "b) .java", "c) .class", "d) .obj"],
+    answer: 2
+  },
+  {
+    q: "Which loop is used to iterate over arrays easily?",
+    options: ["a) enhanced for", "b) while", "c) do-while", "d) switch"],
+    answer: 0
+  },
+  {
+    q: "Which operator is used for OR?",
+    options: ["a) &&", "b) ||", "c) !", "d) =="],
+    answer: 1
+  },
+  {
+    q: "Which class is parent of all Java classes?",
+    options: ["a) Object", "b) Class", "c) Main", "d) Package"],
+    answer: 0
+  },
+  {
+    q: "Which exception occurs when accessing a null object?",
+    options: ["a) ArithmeticException", "b) NullPointerException", "c) InputMismatchException", "d) FileNotFoundException"],
+    answer: 1
+  },
+  {
+    q: "Java arrays are:",
+    options: ["a) Dynamic", "b) Fixed-size", "c) Pointer-based", "d) Non-indexed"],
+    answer: 1
+  },
+  {
+    q: "Which keyword is used to create a thread?",
+    options: ["a) run", "b) thread", "c) new", "d) Thread + start()"],
+    answer: 3
+  },
+  {
+    q: "Which statement is used to exit from switch?",
+    options: ["a) continue", "b) exit", "c) break", "d) stop"],
+    answer: 2
+  },
+  {
+    q: "Which method prints text in Java?",
+    options: ["a) System.out.write()", "b) System.out.println()", "c) print()", "d) writeLn()"],
+    answer: 1
+  },
+  {
+    q: "Which operator is used for assignment?",
+    options: ["a) ==", "b) =", "c) !=", "d) <="],
+    answer: 1
+  },
+  {
+    q: "Which one is NOT a Java loop control statement?",
+    options: ["a) break", "b) continue", "c) return", "d) finish"],
+    answer: 3
+  }
+];
+
+
+
+    const questionEl = document.getElementById("question");
+    const optionsEl = document.getElementById("options");
+    const nextBtn = document.getElementById("next-btn");
+
+    let currentIndex = 0;
+    let score = 0;
+
+    function loadQuestion() {
+      resetState();
+      let current = questions[currentIndex];
+      questionEl.innerText = (currentIndex + 1) + ". " + current.q;
+
+      current.options.forEach((opt, idx) => {
+        const li = document.createElement("li");
+        const button = document.createElement("button");
+        button.innerText = opt;
+        button.onclick = () => selectAnswer(idx);
+        li.appendChild(button);
+        optionsEl.appendChild(li);
+      });
+    }
+
+    function resetState() {
+      nextBtn.style.display = "none";
+      optionsEl.innerHTML = "";
+    }
+
+    function selectAnswer(idx) {
+      const correct = questions[currentIndex].answer;
+      const buttons = optionsEl.querySelectorAll("button");
+      buttons.forEach((btn, i) => {
+        btn.disabled = true;
+        if (i === correct) btn.classList.add("correct");
+        if (i === idx && i !== correct) btn.classList.add("wrong");
+      });
+      if (idx === correct) score++;
+      nextBtn.style.display = "inline-block";
+    }
+
+    function showScore() {
+      resetState();
+      questionEl.innerText = `You scored ${score} out of ${questions.length}!`;
+      nextBtn.innerText = "Restart";
+      nextBtn.style.display = "inline-block";
+    }
+
+    function handleNext() {
+      currentIndex++;
+      if (currentIndex < questions.length) {
+        loadQuestion();
+      } else {
+        showScore();
+      }
+    }
+
+    nextBtn.addEventListener("click", () => {
+      if (currentIndex < questions.length) {
+        handleNext();
+      } else {
+        currentIndex = 0;
+        score = 0;
+        nextBtn.innerText = "Next";
+        loadQuestion();
+      }
+    });
+
+    loadQuestion();
+  </script>
+</body>
+</html>
